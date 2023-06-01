@@ -1,0 +1,52 @@
+cadena = ''
+pos = 0
+error = 0
+
+def E():
+    return T() and E_()
+
+def E_():
+    global pos
+    if pos < len(cadena) and cadena[pos] == '+':
+        pos += 1
+        return T() and E_()
+    return True
+
+def T():
+    return F() and T_()
+
+def T_():
+    global pos
+    if pos < len(cadena) and cadena[pos] == '*':
+        pos += 1
+        return F() and T_()
+    return True
+
+def F():
+    global pos
+    if pos < len(cadena):
+        if cadena[pos] == '(':
+            pos += 1
+            result = E() and cadena[pos] == ')'
+            pos += 1
+            return result
+        elif cadena[pos] == 'i':
+            pos += 1
+            return True
+    return False
+
+# Ejemplo de uso
+cadena = '(i+i)*i'
+cadenas = [
+    'i', 'i+i', 'i+i+i', 'i*i', '(i)', '(i+i)*i',
+    'i+', 'i*', '+i', '*i', 'i+i*'
+]
+
+for e in cadenas:
+    cadena = e
+    pos = 0
+    error = 0
+    if E() and pos == len(cadena) and error == 0:
+        print(f"La cadena [ {e} ] es válida")
+    else:
+        print(f"La cadena [ {e} ] es inválida")
